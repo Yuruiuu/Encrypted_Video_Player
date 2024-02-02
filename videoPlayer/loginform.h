@@ -14,8 +14,6 @@
 #include <QtNetwork/QNetworkAccessManager>
 
 
-
-
 namespace Ui {
 class LoginForm;
 }
@@ -27,13 +25,18 @@ class LoginForm : public QWidget
 public:
     explicit LoginForm(QWidget *parent = nullptr);
     ~LoginForm();
-
+    virtual bool eventFilter(QObject* watched, QEvent* event);
+    virtual void timerEvent(QTimerEvent* event);
 signals:
     void login(const QString& nick, const QByteArray& head);
 
 private slots:
     void on_loginButton_released();
     void slots_login_request_finshed(QNetworkReply* reply);
+
+    void on_autoLoginCheck_stateChanged(int arg1);
+
+    void on_remberPwd_stateChanged(int arg1);
 
 protected:
     virtual void mouseMoveEvent(QMouseEvent* event);
@@ -51,6 +54,7 @@ private:
     InfoForm info;
     RecordFile* record;
     QNetworkAccessManager* net;
+    int auto_login_id;
 };
 
 #endif // LOGINFORM_H
